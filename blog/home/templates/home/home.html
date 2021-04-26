@@ -1,0 +1,62 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    
+<!--Main layout-->
+<main class="p-5 my-5">
+    <div class="container">
+      <!--Section: Content-->
+      <section class="text-center">
+        <h4 class="mb-5"><strong>Latest posts</strong></h4>
+
+        <div class="row">
+          {% for blog in blogs %}
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="card h-100">
+              <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                <img src="/media/{{blog.image}}" class="card-img-top" />
+              </div>
+              <div class="card-body">
+                <a href="{% url 'blog_detail' blog.slug %}"><h5 class="card-title text-dark">{{blog.title}}</h5></a>
+                <p class="text-muted">by {{blog.user}}</p>
+                <p class="text-muted">{{blog.created_at}}</p>
+                <!-- <p class="card-text">
+                  {{ blog.content|safe }}
+                </p> -->
+                <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-primary">Read</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+      <!--Section: Content-->
+
+      <!-- Pagination -->
+  {% if blogs.has_other_pages %}
+  <ul class="pagination justify-content-center">
+    {% if blogs.has_previous %}
+      <li class="page-item page-link"><a href="?page={{ blogs.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled page-item page-link"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in blogs.paginator.page_range %}
+      {% if blogs.number == i %}
+        <li class="active page-item page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="page-link"><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if blogs.has_next %}
+      <li class="page-link"><a href="?page={{ blogs.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled page-link"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+{% endblock content %}
