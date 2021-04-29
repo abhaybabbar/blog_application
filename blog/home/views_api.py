@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from .models import Profile
+from .helpers import generate_random_string, send_mail_to_user
 from django.contrib.auth import authenticate, login
 
 class LoginView(APIView):
@@ -23,6 +25,10 @@ class LoginView(APIView):
             if check_user is None:
                 response['message'] = 'Invalid username, user not found'
                 raise Exception('Invalid username, user not found')
+            
+            if not Profile.objects.filter(user=check_user).first().is_verified:
+                response['message'] = 'Your Profile is not Verified'
+                raise Exception('Profile not Verified.')
             
             user_obj = authenticate(username = data.get('username'), password = data.get('password'))
 
@@ -62,8 +68,12 @@ class RegisterView(APIView):
             # user_objs = User.objects.create(username = data.get('username'))
             # user_objs.set_password = (data.get('password'))
             user_objs.save()
+
+            token = generate_random_string(20)
+            Profile.objects.create(user=user_objs, token=token)
+            send_mail_to_user(token, data.get('email'))
             response['status'] = 200
-            response['message'] = 'User created'
+            response['message'] = 'Verify your account through email sent to your respective Email id.'
 
         except Exception as e:
             print(e)

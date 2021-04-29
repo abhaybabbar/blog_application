@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import BlogForm
-from .models import BlogModel
+from .models import BlogModel, Profile
 from django.contrib.auth import logout
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.decorators import login_required
@@ -100,3 +100,11 @@ def add_blog(request):
         )
         return redirect('home')
     return render(request, 'home/add_blog.html', context=context)
+
+def verify(request, token):
+    profile_obj = Profile.objects.filter(token=token).first()
+    if profile_obj:
+        profile_obj.is_verified = True
+        profile_obj.save()
+        return redirect('login')
+    return redirect('/')

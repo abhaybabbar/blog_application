@@ -10,5 +10,6 @@ urlpatterns = [
     path('user-blogs/', user_blogs, name='user_blogs'),
     path('blog-update/<slug>/', blog_update, name='blog_update'),
     path('blog-delete/<id>/', blog_delete, name='blog_delete'),
-    path('logout/', logout_view, name='logout')
+    path('logout/', logout_view, name='logout'),
+    path('verify/<token>', verify, name='verify'),
 ]

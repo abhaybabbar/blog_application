@@ -16,6 +16,12 @@
 <header>
     <!-- Intro settings -->
     <style>
+      .footer {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+      }
+
       #intro {
         /* Margin to fix overlapping fixed navbar */
         margin-top: 58px;
@@ -24,6 +30,12 @@
         #intro {
           /* Margin to fix overlapping fixed navbar */
           margin-top: 45px;
+        }
+      }
+
+      @media only screen and (max-width: 850px) {
+        .blog_detail {
+          width: 90% !important;
         }
       }
     </style>
@@ -61,7 +73,7 @@
   {% block footer %}
       
   <!--Footer-->
-  <footer class="bg-light position-absolute container-fluid">    
+  <footer class="bg-light container-fluid footer">    
 
     <!-- Copyright -->
     <div class="text-center p-3 text-white font-weight-bold" style="background-color: rgba(0, 0, 0, 0.2);">

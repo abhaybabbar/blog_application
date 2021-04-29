@@ -49,6 +49,7 @@ function login() {
 function register() {
     var csrf = document.getElementById('csrf').value;
     var username = document.getElementById('username').value;
+    var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
 
     // if (username == '' || password == '') {
@@ -57,7 +58,8 @@ function register() {
 
     var data = {
         'username': username,
-        'password': password
+        'email': email,
+        'password': password,
     }
 
     fetch('/api/register/', {
@@ -70,7 +72,7 @@ function register() {
     }).then(result => result.json())
     .then(response => {
         if(response.status==200) {
-            window.location.href = '/'
+            showalert(response.message, 'alert-primary')
         }
         else {
             showalert(response.message, 'alert-danger')
